@@ -1,0 +1,661 @@
+<!doctype html>
+<html lang="kk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Дәстүр жаңғырады</title>
+<style>
+:root{
+  --bg:#faf6f0; --paper:#fffdf9; --ink:#2a1e1a; --muted:#77675c; --line:#e7dccf;
+  --red:#9b2335; --red-soft:#f6e1e3; --blue:#0e6e8c; --blue-soft:#dff0f5; --gold:#c99a2e; --gold-soft:#f7ecd2;
+  --ok:#2f7d32; --bad:#b3261e; --shadow:0 6px 24px rgba(60,30,10,.10);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#1a1614; --paper:#24201d; --ink:#f3ebe3; --muted:#b9a99c; --line:#3c3430;
+    --red:#ef8a96; --red-soft:#3b2226; --blue:#7fcbe0; --blue-soft:#1b3138; --gold:#e5bd5c; --gold-soft:#3a3020;
+    --ok:#7bc67e; --bad:#ff8a80; --shadow:0 6px 24px rgba(0,0,0,.4);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1a1614; --paper:#24201d; --ink:#f3ebe3; --muted:#b9a99c; --line:#3c3430;
+  --red:#ef8a96; --red-soft:#3b2226; --blue:#7fcbe0; --blue-soft:#1b3138; --gold:#e5bd5c; --gold-soft:#3a3020;
+  --ok:#7bc67e; --bad:#ff8a80; --shadow:0 6px 24px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;line-height:1.55}
+.wrap{max-width:1120px;margin:0 auto;padding:0 16px}
+header{background:var(--paper);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
+.bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 0}
+.logo{font-weight:800;font-size:20px;margin-right:auto;cursor:pointer;letter-spacing:.2px}
+.logo span{color:var(--red)}
+nav{display:flex;gap:5px;flex-wrap:wrap}
+nav button,.btn{border:1px solid var(--line);background:transparent;color:var(--ink);padding:7px 12px;border-radius:999px;cursor:pointer;font:inherit;font-size:14px}
+nav button[aria-selected="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.btn:hover,nav button:hover{border-color:var(--ink)}
+.btn.red{background:var(--red);border-color:var(--red);color:#fff}
+.btn.blue{background:var(--blue);border-color:var(--blue);color:#fff}
+:root[data-theme="dark"] .btn.red,:root[data-theme="dark"] .btn.blue{color:#1a1614}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .btn.red,:root:not([data-theme="light"]) .btn.blue{color:#1a1614}}
+main{padding:22px 0 60px}
+section.view{display:none}
+section.view.on{display:block;animation:fade .25s}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1}}
+h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(28px,5vw,46px);line-height:1.1;margin:0 0 10px}
+h2{font-family:Georgia,"Times New Roman",serif;font-size:clamp(22px,3.4vw,30px);margin:0 0 6px}
+h3{margin:0 0 6px;font-size:18px}
+.lead{color:var(--muted);max-width:760px;margin:0 0 18px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:var(--shadow)}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+.hero{display:grid;grid-template-columns:1.25fr 1fr;gap:18px;align-items:stretch}
+@media (max-width:820px){.hero{grid-template-columns:1fr}}
+.hero .card.big{background:linear-gradient(135deg,var(--red) 0%,#5c1420 100%);color:#fff;border:0}
+.hero .card.big p{color:#f6e6e8}
+.eb{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;color:var(--gold)}
+.stat{font-family:Georgia,serif;font-size:46px;font-weight:700;line-height:1}
+.stats .card{text-align:left}
+.muted{color:var(--muted)}
+.pill{display:inline-block;padding:2px 10px;border-radius:999px;font-size:12px;font-weight:700}
+.st-a{background:var(--blue-soft);color:var(--blue)}
+.st-o{background:var(--gold-soft);color:#8a6510}
+.st-b{background:var(--red-soft);color:var(--red)}
+:root[data-theme="dark"] .st-o{color:var(--gold)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .st-o{color:var(--gold)}}
+.sbar{display:flex;height:22px;border-radius:6px;overflow:hidden;background:var(--line)}
+.sbar i{display:block;height:100%}
+.grow{display:grid;grid-template-columns:150px 1fr 26px;gap:10px;align-items:center;margin:7px 0;font-size:14px}
+@media (max-width:520px){.grow{grid-template-columns:110px 1fr 22px}}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;margin-top:8px}
+.legend b{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+input[type=search],input[type=text],textarea,select{font:inherit;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+input[type=search]{min-width:220px;flex:1}
+textarea{width:100%;min-height:90px}
+.chip{border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:999px;padding:5px 11px;font:inherit;font-size:13px;cursor:pointer}
+.chip.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.tcard{cursor:pointer;display:flex;flex-direction:column;gap:6px;transition:transform .15s}
+.tcard:hover{transform:translateY(-2px)}
+.tcard .e{font-size:34px;line-height:1}
+.tcard h3{font-size:19px;margin:0}
+.tcard p{margin:0;font-size:14px;color:var(--muted)}
+.tcard.st-b-border{border-color:var(--red)}
+.modal{position:fixed;inset:0;background:rgba(20,10,5,.55);display:none;align-items:center;justify-content:center;z-index:50;padding:16px}
+.modal.on{display:flex}
+.modal .box{background:var(--paper);color:var(--ink);border-radius:18px;max-width:760px;width:100%;max-height:92vh;overflow:auto;box-shadow:var(--shadow)}
+.split{display:grid;grid-template-columns:1fr 1fr}
+@media (max-width:640px){.split{grid-template-columns:1fr}}
+.split>div{padding:20px}
+.split .old{background:var(--gold-soft)}
+.split .new{background:var(--blue-soft)}
+.mhead{display:flex;align-items:center;gap:12px;padding:18px 20px;border-bottom:1px solid var(--line)}
+.mhead .e{font-size:40px}
+.mfoot{display:flex;gap:8px;justify-content:space-between;align-items:center;padding:14px 20px;border-top:1px solid var(--line);flex-wrap:wrap}
+.q{background:var(--paper);border-left:0;border:1px dashed var(--gold);border-radius:12px;padding:10px 12px;margin-top:10px}
+table.mx{width:100%;border-collapse:collapse;font-size:14px}
+table.mx th,table.mx td{border-bottom:1px solid var(--line);padding:7px 6px;text-align:center}
+table.mx th:first-child,table.mx td:first-child{text-align:left}
+table.mx select{padding:3px 4px}
+.season{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+@media (max-width:900px){.season{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:480px){.season{grid-template-columns:1fr}}
+.season .card{padding:14px}
+.season .chip{margin:3px 3px 0 0;cursor:pointer}
+.mem{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:720px}
+@media (max-width:640px){header{position:static}}
+@media (max-width:600px){.mem{grid-template-columns:repeat(3,1fr)}}
+.mc{aspect-ratio:1/0.8;border-radius:12px;border:1px solid var(--line);background:var(--ink);color:var(--paper);display:flex;align-items:center;justify-content:center;text-align:center;padding:8px;font-size:14px;font-weight:600;cursor:pointer;user-select:none}
+.mc.open{background:var(--gold-soft);color:var(--ink)}
+.mc.done{background:var(--blue-soft);color:var(--blue);cursor:default}
+.opt{display:block;width:100%;text-align:left;margin:6px 0;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--paper);color:var(--ink);font:inherit;cursor:pointer}
+.opt.right{border-color:var(--ok);background:rgba(47,125,50,.12)}
+.opt.wrong{border-color:var(--bad);background:rgba(179,38,30,.10)}
+.score{font-weight:800;color:var(--red)}
+.task{margin-bottom:16px}
+.task details{margin-top:10px;font-size:14px;color:var(--muted)}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:7px 0}
+.row label{min-width:150px;font-weight:600}
+.fb{font-weight:700;margin-top:8px}
+.fb.ok{color:var(--ok)} .fb.no{color:var(--bad)}
+.badges{display:flex;gap:8px;flex-wrap:wrap}
+.badge{padding:6px 10px;border-radius:999px;background:var(--line);color:var(--muted);font-size:13px}
+.badge.got{background:var(--gold);color:#2a1e1a}
+.passport{border:3px double var(--red);border-radius:14px;padding:20px;background:var(--paper)}
+.passport h3{font-family:Georgia,serif;color:var(--red);font-size:22px}
+.passport .f{border-bottom:1px dotted var(--muted);padding:6px 0}
+.dict dt{font-weight:800;margin-top:10px}
+.dict dd{margin:2px 0 0 0;color:var(--muted)}
+footer{border-top:1px solid var(--line);padding:16px 0;color:var(--muted);font-size:13px}
+#print{display:none}
+@media print{
+  body{background:#fff;color:#000}
+  header,main,footer,.modal{display:none!important}
+  #print{display:block}
+  #print .pc{border:1px dashed #555;border-radius:8px;padding:10px;break-inside:avoid}
+  #print .pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  #print h1{font-size:22px}
+  #print .page{page-break-after:always}
+}
+</style>
+</head>
+<body>
+<header><div class="wrap bar">
+  <div class="logo" data-go="home">Дәстүр <span>жаңғырады</span></div>
+  <nav id="nav">
+    <button data-go="home">Басты</button>
+    <button data-go="album">Дәстүрлер</button>
+    <button data-go="matrix">Матрица</button>
+    <button data-go="cal">Күнтізбе</button>
+    <button data-go="games">Ойындар</button>
+    <button data-go="tasks">Тапсырмалар</button>
+    <button data-go="make">Жаңғырт!</button>
+    <button data-go="dict">Сөздік</button>
+    <button data-go="add">+ Дәстүр</button>
+    <button id="theme" title="Түнгі / күндізгі режим">◐</button>
+  </nav>
+</div></header>
+
+<main class="wrap">
+<!-- БАСТЫ -->
+<section class="view" id="v-home">
+  <div class="hero">
+    <div class="card big">
+      <div class="eb" style="color:#f3d27a">Ұлттық дәстүрге жаңаша көзқарас</div>
+      <h1>Ұмытылып бара жатқан дәстүрлерді жаңғыртайық</h1>
+      <p>Бұл альбомда қазақ халқының 40 дәстүрі бар. Әр дәстүрдің <b>мәні</b> (ол неге үйретеді) мен <b>түрі</b> (ол қалай өткізіледі) бөлек қаралды. Түрі ескіруі мүмкін, ал мәні – ешқашан.</p>
+      <div class="row" style="margin-top:14px">
+        <button class="btn" style="background:#fff;color:#5c1420;border:0" data-go="album">Дәстүрлерді ашу</button>
+        <button class="btn" style="color:#fff;border-color:#f3d27a" data-go="games">Ойнау</button>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Дәстүрлердің бүгінгі жағдайы</h3>
+      <div id="homeBars"></div>
+      <div class="legend"><span><b style="background:var(--blue)"></b>Кең сақталған</span><span><b style="background:var(--gold)"></b>Түрі өзгерген</span><span><b style="background:var(--red)"></b>Ұмытылуға жақын</span></div>
+    </div>
+  </div>
+  <div class="grid g4 stats" style="margin-top:16px">
+    <div class="card"><div class="stat" id="sTotal">40</div><div class="muted">дәстүр зерттелді</div></div>
+    <div class="card"><div class="stat" style="color:var(--blue)" id="sA">16</div><div class="muted">кең сақталған</div></div>
+    <div class="card"><div class="stat" style="color:var(--gold)" id="sO">11</div><div class="muted">түрі өзгерген</div></div>
+    <div class="card"><div class="stat" style="color:var(--red)" id="sB">13</div><div class="muted">ұмытылуға жақын</div></div>
+  </div>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card"><div class="eb">Негізгі нәтиже</div><h2>77%</h2><p>Ұмытылуға жақын 13 дәстүрдің 10-ын бүгін мектеп пен отбасында жаңа түрде жаңғыртуға болады («Жаңғырту матрицасы» бойынша).</p><button class="btn blue" data-go="matrix">Өзің бағалап көр</button></div>
+    <div class="card"><div class="eb">Ең маңызды байқау</div><h2>13-тің 8-і</h2><p>Ұмытылып бара жатқан дәстүрлердің көбі – <b>көршілік, өзара көмек, бөлісу, қамқорлық</b> туралы. Ерулік, асар, белкөтерер, сыбаға – бүгін де керек.</p><button class="btn red" data-go="make">Дәстүрді жаңғырт</button></div>
+  </div>
+</section>
+
+<!-- ДӘСТҮРЛЕР -->
+<section class="view" id="v-album">
+  <h2>Дәстүрлер альбомы</h2>
+  <p class="lead">Картаны бас: сол жақта – дәстүр ертеде қалай болған, оң жақта – оны бүгін қалай жаңғыртуға болады.</p>
+  <div class="tools">
+    <input type="search" id="q" placeholder="Іздеу: ерулік, көрші, ойын...">
+    <button class="btn" id="printBook">Альбомды басып шығару</button>
+  </div>
+  <div class="tools" id="gChips"></div>
+  <div class="tools" id="sChips"></div>
+  <div class="grid g3" id="cards"></div>
+  <p class="muted" id="cnt"></p>
+</section>
+
+<!-- МАТРИЦА -->
+<section class="view" id="v-matrix">
+  <h2>Жаңғырту матрицасы</h2>
+  <p class="lead">Ұмытылуға жақын әр дәстүрді төрт өлшем бойынша бағала: 0 – жоқ, 1 – ішінара, 2 – иә. 6 және одан көп балл жинаған дәстүрді жаңғыртуға ұсынамыз. Соңында өз бағаңды автордың бағасымен салыстыр.</p>
+  <div class="card" style="overflow-x:auto">
+    <table class="mx" id="mx"></table>
+  </div>
+  <div class="row"><button class="btn blue" id="mxCmp">Автордың бағасымен салыстыру</button><button class="btn" id="mxReset">Тазалау</button></div>
+  <div id="mxOut" class="card" style="display:none;margin-top:10px"></div>
+  <div class="card" style="margin-top:14px"><b>К1</b> – мәні бүгін өзекті ме? · <b>К2</b> – қауіпсіз әрі қолжетімді ме (мал, арнайы жер керек емес пе)? · <b>К3</b> – мектепте не отбасында өткізуге бола ма? · <b>К4</b> – жастарға қызықты ма?</div>
+</section>
+
+<!-- КҮНТІЗБЕ -->
+<section class="view" id="v-cal">
+  <h2>Дәстүр күнтізбесі</h2>
+  <p class="lead">Қай дәстүрді жылдың қай мезгілінде жаңғыртуға болады? Түсі – дәстүрдің бүгінгі жағдайы. Атауын бассаң, картасы ашылады.</p>
+  <div class="season" id="season"></div>
+</section>
+
+<!-- ОЙЫНДАР -->
+<section class="view" id="v-games">
+  <h2>Ойындар</h2>
+  <div class="tools"><button class="chip on" data-game="mem">Жұбын тап</button><button class="chip" data-game="quiz">Викторина</button><button class="chip" data-game="sort">Сақталды ма, ұмытылды ма?</button></div>
+  <div id="g-mem" class="card">
+    <h3>Жұбын тап</h3><p class="muted">Дәстүр мен оның мәнін жұптастыр. Қадам саны: <b id="memSteps">0</b></p>
+    <div class="mem" id="mem"></div>
+    <div class="row"><button class="btn red" id="memNew">Жаңа ойын</button><span id="memMsg" class="fb ok"></span></div>
+  </div>
+  <div id="g-quiz" class="card" style="display:none">
+    <h3>Викторина <span class="score" id="qzScore"></span></h3>
+    <div id="qz"></div>
+    <div class="row"><button class="btn red" id="qzNew">Жаңа викторина</button><button class="btn" id="qzPrint">Басып шығару (жауабымен)</button></div>
+  </div>
+  <div id="g-sort" class="card" style="display:none">
+    <h3>Сақталды ма, ұмытылды ма? <span class="score" id="srScore"></span></h3>
+    <p class="muted">Дәстүрдің бүгінгі жағдайын тап. Зерттеу нәтижесімен салыстырамыз.</p>
+    <div id="sr"></div>
+  </div>
+</section>
+
+<!-- ТАПСЫРМАЛАР -->
+<section class="view" id="v-tasks">
+  <h2>Тапсырмалар</h2>
+  <p class="lead">Әр тапсырма үшін ұпай жина. Барлық ұпай: <b class="score" id="pts">0</b> / 70</p>
+  <div class="card" style="margin-bottom:16px"><h3>Белгілер</h3><div class="badges" id="badges"></div></div>
+  <div id="taskList"></div>
+  <div class="row"><button class="btn" id="printWS">Жұмыс парағын басып шығару</button><button class="btn" id="printCards">Карточкаларды басып шығару</button><button class="btn" id="resetPts">Ұпайды тазалау</button></div>
+</section>
+
+<!-- ЖАҢҒЫРТ -->
+<section class="view" id="v-make">
+  <h2>Жаңғырт! Дәстүр паспорты</h2>
+  <p class="lead">Ұмытылып бара жатқан бір дәстүрді таңда да, оны өз мектебіңде не отбасыңда қалай жаңғыртатыныңды ойлап тап. Паспортты басып шығарып, іс-шараңды жоспарла.</p>
+  <div class="grid g2">
+    <div class="card">
+      <div class="row"><label>Дәстүр</label><select id="pTr"></select></div>
+      <div class="row"><label>Жаңа атауы</label><input type="text" id="pName" placeholder="мысалы, «Ерулік сәлемдемесі»"></div>
+      <div class="row"><label>Қайда, қашан</label><input type="text" id="pWhen" placeholder="мысалы, қыркүйек, 8-сынып"></div>
+      <div class="row"><label>Кімдер қатысады</label><input type="text" id="pWho" placeholder="сынып, ата-аналар..."></div>
+      <div class="row" style="align-items:flex-start"><label>Не істейміз</label><textarea id="pWhat" placeholder="қадамдарын жаз"></textarea></div>
+      <div class="row" style="align-items:flex-start"><label>Қандай мәнін сақтаймыз</label><textarea id="pVal"></textarea></div>
+      <div class="row"><button class="btn red" id="pPrint">Паспортты басып шығару</button></div>
+    </div>
+    <div class="passport" id="passport"></div>
+  </div>
+</section>
+
+<!-- СӨЗДІК -->
+<section class="view" id="v-dict">
+  <h2>Сөздік</h2>
+  <p class="lead">Дәстүрлерге байланысты сирек кездесетін сөздер.</p>
+  <div class="card"><dl class="dict" id="dict"></dl></div>
+</section>
+
+<!-- ҚОСУ -->
+<section class="view" id="v-add">
+  <h2>Альбомға жаңа дәстүр қосу</h2>
+  <p class="lead">Ата-әжеңнен естіген дәстүрді қос. Қосылған дәстүр осы компьютердегі браузерде сақталады. Тұрақты қосу үшін index.html файлындағы DATA тізіміне жаз (ОҚЫҢЫЗ.txt файлын қара).</p>
+  <div class="card">
+    <div class="row"><label>Атауы</label><input type="text" id="aName"></div>
+    <div class="row"><label>Эмодзи</label><input type="text" id="aE" value="✨" style="width:70px"></div>
+    <div class="row"><label>Тобы</label><select id="aG"></select></div>
+    <div class="row"><label>Бүгінгі жағдайы</label><select id="aS"><option value="a">Кең сақталған</option><option value="o">Түрі өзгерген</option><option value="b">Ұмытылуға жақын</option></select></div>
+    <div class="row" style="align-items:flex-start"><label>Ертеде не істелген</label><textarea id="aDesc"></textarea></div>
+    <div class="row"><label>Мәні</label><input type="text" id="aVal" style="flex:1"></div>
+    <div class="row" style="align-items:flex-start"><label>Заманауи формат</label><textarea id="aMod"></textarea></div>
+    <div class="row"><label>«Ойлан» сұрағы</label><input type="text" id="aQ" style="flex:1"></div>
+    <div class="row"><button class="btn red" id="aSave">Қосу</button><span id="aMsg" class="fb ok"></span></div>
+  </div>
+  <div class="card" style="margin-top:14px"><h3>Қосылған дәстүрлер</h3><div id="added" class="muted">Әзірге жоқ.</div></div>
+</section>
+</main>
+
+<footer><div class="wrap">«Дәстүр жаңғырады» – «Ұлттық дәстүрге жаңаша көзқарас: ұмытылып бара жатқан дәстүрлерді жаңғырту» зерттеу жобасының өнімі · «Зерде», 2026–2027 · Интернетсіз жұмыс істейді</div></footer>
+
+<div class="modal" id="modal"><div class="box" id="mbox"></div></div>
+<div id="print"></div>
+
+<script>
+// «Дәстүр жаңғырады» – ортақ деректер (ғылыми жұмыс, өнім, стенд, презентация осыдан құрылады)
+const GROUPS = {
+  bala:   {name:"Бала тәрбиесі",        e:"👶"},
+  otbasy: {name:"Отбасы, үйлену",        e:"💍"},
+  qonaq:  {name:"Қонақжайлық",          e:"🍽️"},
+  yntymaq:{name:"Ынтымақ, көмек",        e:"🤝"},
+  mausym: {name:"Маусымдық, шаруашылық", e:"🌾"},
+  adep:   {name:"Әдеп, тағылым",         e:"📜"},
+  oiyn:   {name:"Ойын, өнер",            e:"🎶"}
+};
+const STATUS = {
+  a:{name:"Кең сақталған",       short:"сақталған"},
+  o:{name:"Түрі өзгеріп сақталған", short:"өзгерген"},
+  b:{name:"Ұмытылуға жақын",      short:"ұмытылуда"}
+};
+// m – «Жаңғырту матрицасы»: [К1 мәні бүгін өзекті, К2 қауіпсіз әрі қолжетімді, К3 мектепте/отбасында өткізуге болады, К4 жастарға қызықты], әрқайсысы 0–2
+const WHY = {
+  farm:"Шаруашылықтың өзгеруі", city:"Қала өмірі, көршіліктің әлсіреуі",
+  name:"Атауы мен мәнінің ұмытылуы", gadget:"Бос уақыттың гаджетке ауысуы"
+};
+const DATA = [
+ {name:"Шілдехана", e:"🌙", g:"bala", st:"o", season:"кез келген",
+  desc:"Нәресте дүниеге келгенде ауыл жастары жиналып, түні бойы ән айтып, ойын-сауық құрып, ана мен баланы күзеткен кеш.",
+  val:"Қамқорлық, қуаныш бөлісу", modern:"«Нәрестеге тілек кітабы»: туыстар мен достар жазған тілектер, әндер мен суреттер жинағы.",
+  q:"Неліктен ертеде жаңа туған баланы түні бойы күзеткен деп ойлайсың?"},
+ {name:"Сүйінші", e:"📣", g:"bala", st:"a", season:"кез келген",
+  desc:"Қуанышты хабарды бірінші жеткізген адам «Сүйінші!» деп, хабар иесінен сыйлық сұрайды.",
+  val:"Қуаныш бөлісу", modern:"Бүгін де кең таралған: жақсы хабарды телефонмен, хабарламамен жеткізгенде де «сүйінші» сұралады.",
+  q:"Қуанышты хабарды бірінші болып жеткізуге неге бәрі асығады?"},
+ {name:"Бесікке салу", e:"🪺", g:"bala", st:"a", season:"кез келген",
+  desc:"Нәрестені алғаш рет бесікке бөлеу рәсімі. Оны көбіне өнегелі әже не ана атқарып, бесікті аластап, шашу шашады.",
+  val:"Қамқорлық, ұрпақ сабақтастығы", modern:"Бүгін де өткізіледі; бесік жыры жазбасын отбасы мұрағатында сақтау.",
+  q:"Бесік жыры баланың тіліне қалай әсер етеді?"},
+ {name:"Қырқынан шығару", e:"🛁", g:"bala", st:"a", season:"кез келген",
+  desc:"Нәресте қырық күнге толғанда оны қырық қасық сумен шомылдырып, алғаш рет шашы мен тырнағын алатын рәсім.",
+  val:"Қамқорлық, денсаулық", modern:"Бүгін де кең таралған.",
+  q:"Неліктен «қырық күн» нәресте үшін ерекше кезең саналған?"},
+ {name:"Тұсаукесер", e:"👣", g:"bala", st:"a", season:"кез келген",
+  desc:"Баланың алғашқы қадамында аяғына ала жіп байлап, оны ширақ, ісі адал адамға кескізеді.",
+  val:"Тілек, өнеге", modern:"Бүгін де кең таралған; тұсаукесер жыры жиі айтылады.",
+  q:"Тұсауды неге кез келген адам емес, өнегелі адам кеседі?"},
+ {name:"Тілашар", e:"📖", g:"bala", st:"o", season:"күз",
+  desc:"Бала оқуға кірерде ауылдың білімді, сыйлы адамы бата беріп, оның сауатын ашатын рәсім.",
+  val:"Білімге құрмет", modern:"Бүгін 1-сыныпқа кіру мерекесі мен «Әліппемен қоштасу» түрінде өтеді.",
+  q:"Тілашар мен 1-қыркүйек мерекесінің ұқсастығы неде?"},
+ {name:"Ашамайға мінгізу", why:"farm", e:"🐴", g:"bala", st:"b", season:"жаз", m:[2,0,0,2],
+  desc:"5–6 жастағы баланы алғаш рет ашамай ерге отырғызып, атқа мінгізіп, ауылды аралатып, үлкендерден бата алу.",
+  val:"Дербестік, ерлікке баулу", modern:"Баланың алғашқы дербес қадамын (алғашқы спорт жарысы, велосипед) отбасымен тойлап, бата беру.",
+  q:"Бүгінгі бала үшін «алғаш рет атқа міну» нені алмастыра алады?"},
+ {name:"Сүндет той", e:"🎉", g:"bala", st:"a", season:"кез келген",
+  desc:"Ұл баланы сүндетке отырғызу құрметіне жасалатын той.",
+  val:"Қуаныш бөлісу", modern:"Бүгін де кең таралған.",
+  q:"Отбасылық тойлардың туыстарды жақындастыруы неде?"},
+ {name:"Бәсіре", why:"farm", e:"🐎", g:"bala", st:"b", season:"көктем", m:[2,2,1,2],
+  desc:"Балаға құлын, қозы не бота атап беріп, оны өз қолымен күтуге баулу. Бәсіре баланың алғашқы меншігі болған.",
+  val:"Жауапкершілік, еңбекке баулу", modern:"«Менің бәсірем»: балаға ағаш көшеті, гүл не үй жануарын күтуге беріп, күтім күнделігін жүргізу.",
+  q:"Тірі жанды күтудің балаға берер сабағы қандай?"},
+
+ {name:"Құда түсу", e:"🤝", g:"otbasy", st:"a", season:"кез келген",
+  desc:"Ұл жақтың құдалары қыздың үйіне барып, екі әулеттің келісімін алатын рәсім.",
+  val:"Екі әулеттің сыйластығы", modern:"Бүгін де кең таралған.",
+  q:"Құдалық неге тек екі адамның емес, екі әулеттің ісі саналады?"},
+ {name:"Сырға салу", e:"💍", g:"otbasy", st:"a", season:"кез келген",
+  desc:"Құдалар келісімнің белгісі ретінде қызға сырға тағады.",
+  val:"Келісім, сенім", modern:"Бүгін де кең таралған.",
+  q:"Неліктен келісімнің белгісіне сырға таңдалған?"},
+ {name:"Қыз ұзату", e:"👰", g:"otbasy", st:"a", season:"кез келген",
+  desc:"Қызды жаңа отбасына аттандыру тойы. Қыз туыстарымен қоштасып, «Сыңсу» айтылады.",
+  val:"Ата-анаға құрмет, қоштасу", modern:"Бүгін де кең таралған.",
+  q:"Қыз ұзату тойында айтылатын әндердің мәні неде?"},
+ {name:"Беташар", e:"🎶", g:"otbasy", st:"a", season:"кез келген",
+  desc:"Жаңа түскен келінді жаңа әулетпен таныстыру рәсімі: жыршы туыстарды атап, келінге өсиет айтады.",
+  val:"Әдеп, туыстарды тану", modern:"Бүгін де кең таралған.",
+  q:"Беташар жырында келінге қандай кеңестер айтылады?"},
+
+ {name:"Ерулік", why:"city", e:"🍲", g:"qonaq", st:"b", season:"кез келген", m:[2,2,2,2],
+  desc:"Жаңа қоныстанған көршіге ауыл тұрғындары дәм әкеліп, оны үйіне шақырып, жаңа ортаға тез үйренуге көмектескен.",
+  val:"Көршілік, жаңа адамға қамқорлық", modern:"«Ерулік сәлемдемесі»: жаңа көршіге не сыныпқа жаңадан келген оқушыға таныстыру хаты, мектеп картасы мен дәм.",
+  q:"Жаңа мектепке келген оқушыға ең алдымен не керек?"},
+ {name:"Қонақасы", e:"🍽️", g:"qonaq", st:"o", season:"кез келген",
+  desc:"Үйге келген кез келген жолаушыны түсіріп, дәм беру. Қазақта «қонақасы – қонақтың құқы» деген.",
+  val:"Қонақжайлық", modern:"Қонақты күту сақталған, бірақ бейтаныс жолаушыны түсіру қала өмірінде сирек.",
+  q:"Бүгін бейтаныс адамға қонақжайлықты қалай көрсетуге болады?"},
+ {name:"Сарқыт", e:"🧺", g:"qonaq", st:"a", season:"кез келген",
+  desc:"Той не қонақтан әкелінген дәм үйде қалғандарға, әсіресе балалар мен қарттарға үлестіріледі.",
+  val:"Бөлісу, үйдегілерге құрмет", modern:"Бүгін де кең таралған.",
+  q:"Сарқыт әкелу дәстүрі балаға нені үйретеді?"},
+ {name:"Сыбаға", why:"city", e:"🥩", g:"qonaq", st:"b", season:"қыс", m:[2,2,1,1],
+  desc:"Соғым мен ас кезінде қадірлі адамға, алыстағы туысқа арнайы сақталатын үлес. «Сыбағасыз қалу» – ұят саналған.",
+  val:"Құрмет, ешкімді ұмытпау", modern:"«Сыбаға»: мектеп іс-шарасында келмей қалған досқа, ұстазға, қарт көршіге үлес сақтап, апарып беру.",
+  q:"Келмей қалған адамға үлес сақтау оған қандай сезім сыйлайды?"},
+ {name:"Шашу", e:"🍬", g:"qonaq", st:"a", season:"кез келген",
+  desc:"Қуанышты сәтте кәмпит, бауырсақ, тиын шашып, жиналғандар оны ырымдап теріп алады.",
+  val:"Қуаныш бөлісу", modern:"Бүгін де кең таралған.",
+  q:"Шашуды неліктен жерде қалдырмай, теріп алады?"},
+ {name:"Көрімдік", e:"👀", g:"qonaq", st:"a", season:"кез келген",
+  desc:"Жаңа туған нәрестені, жаңа түскен келінді не жаңа затты алғаш көргенде берілетін сыйлық.",
+  val:"Қуанышқа ортақтасу", modern:"Бүгін де кең таралған.",
+  q:"Көрімдік пен байғазының айырмашылығы неде?"},
+ {name:"Байғазы", e:"🎁", g:"qonaq", st:"a", season:"кез келген",
+  desc:"Жаңа киім киген не жаңа зат алған адамға құттықтап берілетін шағын сыйлық.",
+  val:"Қуанышқа ортақтасу", modern:"Бүгін де кең таралған.",
+  q:"Байғазы сұрау мен беру неге адамдарды жақындатады?"},
+
+ {name:"Асар", why:"city", e:"🔨", g:"yntymaq", st:"b", season:"жаз", m:[2,2,2,1],
+  desc:"Үй салу, шөп шабу сияқты ауыр жұмысты бүкіл ауыл болып тегін атқару. Жұмыс соңында асар иесі дастарқан жаяды.",
+  val:"Ұжымдық еңбек, өзара көмек", modern:"«Мектеп асары»: ауланы көгалдандыру, ағаш отырғызу, қарт адамның үйіне көмектесу – еріктілер күні.",
+  q:"Асар мен бүгінгі еріктілік (волонтерлік) қаншалықты ұқсас?"},
+ {name:"Жылу жинау", e:"🕯️", g:"yntymaq", st:"o", season:"кез келген",
+  desc:"Өрт, су тасқыны сияқты апатқа ұшыраған отбасына ауыл болып мал-мүлік жинап беру.",
+  val:"Қайырымдылық", modern:"Бүгін қайырымдылық жинау, банк аударымы түрінде сақталған.",
+  q:"Жылу жинаудың бүгінгі түрлерін ата."},
+ {name:"Белкөтерер", why:"name", e:"🍵", g:"yntymaq", st:"b", season:"кез келген", m:[2,2,2,1],
+  desc:"Ауырып тұрған не науқастан айыққан адамға, қартқа арнайы жеңіл, жұғымды ас пісіріп апарып, көңілін сұрау.",
+  val:"Қамқорлық, жанашырлық", modern:"«Белкөтерер сапары»: қарт көршіге не ауырып қалған сыныптасқа барып, хат, сурет, жылы сөз сыйлау.",
+  q:"Ауырған адамға дәрімен қатар не қажет?"},
+ {name:"Көрісу", why:"name", e:"🫂", g:"yntymaq", st:"b", season:"көктем", m:[2,2,2,2],
+  desc:"Наурыздың 14-і – Амал мерекесінде үлкен-кіші бір-бірімен құшақтасып амандасып, жылдық өкпе-реніштен арылады.",
+  val:"Татулық, кешірім", modern:"«Көрісу күні»: мектепте 14 наурызда сыныптар бір-бірімен амандасып, кешірім мен алғыс хаттарын алмасады.",
+  q:"Кешірім сұрау неге қиын, ал кешіру неге маңызды?"},
+ {name:"Сәлем-сауқат", e:"🎒", g:"yntymaq", st:"o", season:"кез келген",
+  desc:"Сапардан оралғанда не туысқа барғанда әкелінетін шағын сыйлық.",
+  val:"Ілтипат, туыстық", modern:"Бүгін «сувенир» түрінде сақталған, бірақ «сәлем-сауқат» атауы сирек айтылады.",
+  q:"Сыйлықтың құны маңызды ма, әлде ілтипаты ма?"},
+
+ {name:"Наурыз көже", e:"🥣", g:"mausym", st:"a", season:"көктем",
+  desc:"Наурыз мерекесінде жеті түрлі дәмнен пісірілетін көже. Оны көрші-қолаң бір-біріне ауыз тигізеді.",
+  val:"Молшылық тілеу, бөлісу", modern:"Бүгін де кең таралған.",
+  q:"Наурыз көженің жеті дәмі нені білдіреді?"},
+ {name:"Қымызмұрындық", why:"farm", e:"🥛", g:"mausym", st:"b", season:"көктем", m:[2,1,1,1],
+  desc:"Көктемде бие байланғанда алғашқы қымызға көрші-қолаң мен үлкендерді шақырып, ауыз тигізу.",
+  val:"Алғыс, алғашқы өніммен бөлісу", modern:"«Алғашқы өнім»: мектеп бағының не үйдің алғашқы өнімімен (алма, көкөніс) көршілермен бөлісу.",
+  q:"Неліктен алғашқы өнімді алдымен басқаларға ұсынған?"},
+ {name:"Соғым басы", why:"farm", e:"🍖", g:"mausym", st:"b", season:"қыс", m:[1,0,1,1],
+  desc:"Қыс басында соғым сойылғанда ауылдастарды шақырып, жаңа еттен дәм тарту.",
+  val:"Бөлісу, көршілік", modern:"«Қысқы дастарқан»: қыстың басында көрші-қолаңды шәйге шақыру.",
+  q:"Қала өмірінде көршілер бір-бірін неге аз таниды?"},
+ {name:"Тоқымқағар", why:"name", e:"🧳", g:"mausym", st:"b", season:"кез келген", m:[2,2,2,2],
+  desc:"Алыс сапарға аттанар адамды шығарып салар алдында туыстары дәм беріп, жолына ақ тілек айтады.",
+  val:"Қолдау, ақ тілек", modern:"«Тоқымқағар»: олимпиадаға, жарысқа, оқуға аттанған сыныптасқа тілек хат пен шағын шығарып салу кеші.",
+  q:"Жарысқа бара жатқан адамға тілек неге қажет?"},
+
+ {name:"Бата беру", e:"🤲", g:"adep", st:"a", season:"кез келген",
+  desc:"Үлкен адамның кішіге, дастарқан басында не сапар алдында жақсы тілек айтуы.",
+  val:"Үлкенге құрмет, тілек", modern:"Бүгін де кең таралған.",
+  q:"Бата мен қарапайым тілектің айырмашылығы неде?"},
+ {name:"Жеті атаны білу", e:"🌳", g:"adep", st:"o", season:"кез келген",
+  desc:"Әр қазақ баласының әке жағынан жеті атасын білуі. Бұл туыстықты сақтап, жеті атаға дейін некелесуге тыйым салған.",
+  val:"Тарихи жады, туыстық", modern:"Цифрлық «Шежіре ағашы»: ата-әжелерден сұрап, отбасы тарихын жазу.",
+  q:"Өз атаңның атасын білесің бе? Оны кімнен сұрар едің?"},
+ {name:"Тыйым сөздер", why:"name", e:"🚫", g:"adep", st:"b", season:"кез келген", m:[1,2,2,2],
+  desc:"«Суға түкірме», «Отқа су құйма», «Табалдырықты баспа» сияқты ескертулер. Олар балаға әдеп пен сақтықты үйреткен.",
+  val:"Әдеп, табиғатқа құрмет, сақтық", modern:"«Неге олай деген?»: әр тыйымның тәрбиелік не ғылыми түсіндірмесі бар стикер мен комикс.",
+  q:"«Суға түкірме» деген тыйымның ғылыми түсіндірмесі қандай?"},
+ {name:"Қара шаңырақ", e:"🏠", g:"adep", st:"o", season:"кез келген",
+  desc:"Кенже ұл әке-шешесімен бірге қалып, ата-баба үйінің – қара шаңырақтың иесі болады.",
+  val:"Ата-анаға қамқорлық", modern:"Ата-ана үйіне қамқорлық сақталған, бірақ отбасылар қалаға көшкенде түрі өзгерді.",
+  q:"Ата-ана қартайғанда оларға кім қамқор болуы керек?"},
+ {name:"Ат қою", e:"🏷️", g:"adep", st:"o", season:"кез келген",
+  desc:"Нәрестеге ат қоюды ауылдың сыйлы ақсақалына не әжесіне беріп, құлағына атын үш рет айтқызу.",
+  val:"Үлкенге құрмет", modern:"Бүгін атты көбіне ата-ана өзі қояды; есімнің мағынасын білу дәстүрі жаңғыртуды қажет етеді.",
+  q:"Өз есіміңнің мағынасын білесің бе?"},
+
+ {name:"Алтыбақан", why:"gadget", e:"🎠", g:"oiyn", st:"b", season:"көктем", m:[2,1,2,2],
+  desc:"Ұзын сырықтардан құрылған әткеншек. Кешке жастар жиналып, ән айтып, тербеліп, өнер көрсеткен.",
+  val:"Өнер, жастардың араласуы", modern:"«Алтыбақан кеші»: Наурызда мектеп ауласында ересектердің бақылауымен ән, айтыс, ойын.",
+  q:"Алтыбақан неге жай әткеншек емес, өнер алаңы болған?"},
+ {name:"Асық ату", e:"🦴", g:"oiyn", st:"o", season:"кез келген",
+  desc:"Қой асығымен ойналатын ептілік ойыны. 2017 жылы ЮНЕСКО-ның материалдық емес мәдени мұра тізіміне енді.",
+  val:"Ептілік, мергендік", modern:"Спорт жарыстары мен мектеп үйірмелерінде жаңғыруда.",
+  q:"Асық ойыны қандай қабілеттерді дамытады?"},
+ {name:"Тоғызқұмалақ", e:"⚫", g:"oiyn", st:"o", season:"кез келген",
+  desc:"Есеп пен стратегияға негізделген зияткерлік ойын. 2020 жылы ЮНЕСКО тізіміне енді.",
+  val:"Ойлау, есеп", modern:"Мектеп үйірмелері мен республикалық жарыстарда ойналады.",
+  q:"Тоғызқұмалақ пен шахматтың ұқсастығы неде?"},
+ {name:"Айтыс", e:"🎤", g:"oiyn", st:"a", season:"кез келген",
+  desc:"Екі ақынның суырыпсалма өнер сайысы. 2015 жылы ЮНЕСКО тізіміне енді.",
+  val:"Сөз өнері, тапқырлық", modern:"Бүгін де телеарналарда, сахнада тұрақты өтеді.",
+  q:"Айтыскер ақынға қандай қасиеттер керек?"},
+ {name:"Қыз қуу", e:"🏇", g:"oiyn", st:"o", season:"жаз",
+  desc:"Атты жігіт пен қыздың жарысы: жігіт қызды қуып жетуі тиіс, жете алмаса, қыз оны қамшымен қуады.",
+  val:"Ептілік, атқа шабандоздық", modern:"Бүгін көбіне мерекелік көрсетілім, этнофестиваль түрінде өтеді.",
+  q:"Ұлттық ат ойындарын қалада қалай таныстыруға болады?"},
+ {name:"Ақсүйек", why:"gadget", e:"🌙", g:"oiyn", st:"b", season:"жаз", m:[2,1,1,2],
+  desc:"Ай жарық түнде ақ сүйекті алысқа лақтырып, екі топ болып іздеп табатын ойын.",
+  val:"Ептілік, топпен жұмыс", modern:"Жазғы лагерьде не дене шынықтыру сабағында жарқырайтын таяқшамен ойналатын «Ақсүйек».",
+  q:"Неліктен бұл ойын түнде ойналған?"}
+];
+
+</script>
+<script>
+(function(){
+const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const store={get(k,d){try{const v=localStorage.getItem('dj_'+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem('dj_'+k,JSON.stringify(v))}catch(e){}}};
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const ALL=()=>DATA.concat(store.get('added',[]));
+const stColor={a:'var(--blue)',o:'var(--gold)',b:'var(--red)'};
+
+/* навигация */
+function go(id){$$('section.view').forEach(s=>s.classList.toggle('on',s.id==='v-'+id));$$('#nav button[data-go]').forEach(b=>b.setAttribute('aria-selected',b.dataset.go===id));window.scrollTo(0,0);if(location.hash!=='#'+id)history.replaceState(null,'','#'+id)}
+document.addEventListener('click',e=>{const t=e.target.closest('[data-go]');if(t){go(t.dataset.go)}});
+$('#theme').onclick=()=>{const r=document.documentElement;const dark=r.dataset.theme?r.dataset.theme==='dark':matchMedia('(prefers-color-scheme: dark)').matches;r.dataset.theme=dark?'light':'dark';store.set('theme',r.dataset.theme)};
+const th=store.get('theme',null);if(th)document.documentElement.dataset.theme=th;
+
+/* басты бет */
+function home(){const d=ALL();const c={a:0,o:0,b:0};d.forEach(x=>c[x.st]++);$('#sTotal').textContent=d.length;$('#sA').textContent=c.a;$('#sO').textContent=c.o;$('#sB').textContent=c.b;
+  const gs=Object.keys(GROUPS);const mx=Math.max(...gs.map(g=>d.filter(x=>x.g===g).length));
+  $('#homeBars').innerHTML=gs.map(g=>{const xs=d.filter(x=>x.g===g);const seg=['a','o','b'].map(s=>{const n=xs.filter(x=>x.st===s).length;return n?`<i style="width:${n/mx*100}%;background:${stColor[s]}" title="${STATUS[s].name}: ${n}"></i>`:''}).join('');return `<div class="grow"><span>${GROUPS[g].e} ${GROUPS[g].name}</span><div class="sbar" style="background:transparent">${seg}</div><b>${xs.length}</b></div>`}).join('')}
+
+/* альбом */
+let fG='all',fS='all';
+function chips(){ $('#gChips').innerHTML=`<button class="chip ${fG==='all'?'on':''}" data-g="all">Барлық топ</button>`+Object.keys(GROUPS).map(g=>`<button class="chip ${fG===g?'on':''}" data-g="${g}">${GROUPS[g].e} ${GROUPS[g].name}</button>`).join('');
+  $('#sChips').innerHTML=`<button class="chip ${fS==='all'?'on':''}" data-s="all">Кез келген жағдай</button>`+Object.keys(STATUS).map(s=>`<button class="chip ${fS===s?'on':''}" data-s="${s}">${STATUS[s].name}</button>`).join('');}
+$('#gChips').onclick=e=>{const b=e.target.closest('[data-g]');if(b){fG=b.dataset.g;chips();cards()}};
+$('#sChips').onclick=e=>{const b=e.target.closest('[data-s]');if(b){fS=b.dataset.s;chips();cards()}};
+$('#q').oninput=cards;
+let shown=[];
+function cards(){const q=$('#q').value.trim().toLowerCase();shown=ALL().filter(x=>(fG==='all'||x.g===fG)&&(fS==='all'||x.st===fS)&&(!q||(x.name+' '+x.desc+' '+x.val+' '+x.modern).toLowerCase().includes(q)));
+  $('#cards').innerHTML=shown.map((x,i)=>`<div class="card tcard ${x.st==='b'?'st-b-border':''}" data-i="${i}"><div class="e">${esc(x.e)}</div><h3>${esc(x.name)}</h3><div><span class="pill st-${x.st}">${STATUS[x.st].name}</span></div><p>${esc(x.val)}</p></div>`).join('')||'<p class="muted">Ештеңе табылмады.</p>';
+  $('#cnt').textContent=`Көрсетілді: ${shown.length} / ${ALL().length}`;}
+$('#cards').onclick=e=>{const c=e.target.closest('.tcard');if(c)openCard(shown,+c.dataset.i)};
+function openCard(list,i){const x=list[i];const m=x.m?`<div class="q"><b>Жаңғырту матрицасы:</b> К1 ${x.m[0]} · К2 ${x.m[1]} · К3 ${x.m[2]} · К4 ${x.m[3]} = <b>${x.m.reduce((a,b)=>a+b,0)} / 8</b> ${x.m.reduce((a,b)=>a+b,0)>=6?'– жаңғыртуға ұсынылады':'– бейімдеп өткізу керек'}</div>`:'';
+  const why=x.why?`<p><b>Неге ұмытылуда:</b> ${esc(WHY[x.why])}</p>`:'';
+  $('#mbox').innerHTML=`<div class="mhead"><span class="e">${esc(x.e)}</span><div><h2 style="margin:0">${esc(x.name)}</h2><span class="pill st-${x.st}">${STATUS[x.st].name}</span> <span class="muted">· ${GROUPS[x.g]?GROUPS[x.g].name:''}</span></div><button class="btn" style="margin-left:auto" id="mClose" aria-label="Жабу">✕</button></div>
+  <div class="split"><div class="old"><div class="eb" style="color:#8a6510">Ертеде</div><p>${esc(x.desc)}</p><p><b>Мәні:</b> ${esc(x.val)}</p>${why}</div><div class="new"><div class="eb" style="color:var(--blue)">Бүгін</div><p>${esc(x.modern)}</p>${m}</div></div>
+  <div style="padding:0 20px 6px"><div class="q"><b>Ойлан:</b> ${esc(x.q)}</div></div>
+  <div class="mfoot"><button class="btn" id="mPrev">← Алдыңғы</button><span class="muted">${i+1} / ${list.length}</span><button class="btn" id="mNext">Келесі →</button></div>`;
+  $('#modal').classList.add('on');
+  $('#mClose').onclick=closeM;$('#mPrev').onclick=()=>openCard(list,(i-1+list.length)%list.length);$('#mNext').onclick=()=>openCard(list,(i+1)%list.length);}
+function closeM(){$('#modal').classList.remove('on')}
+$('#modal').onclick=e=>{if(e.target.id==='modal')closeM()};
+document.addEventListener('keydown',e=>{if(!$('#modal').classList.contains('on'))return;if(e.key==='Escape')closeM();if(e.key==='ArrowRight'&&$('#mNext'))$('#mNext').click();if(e.key==='ArrowLeft'&&$('#mPrev'))$('#mPrev').click()});
+
+/* матрица */
+const MX=()=>DATA.filter(x=>x.m);
+function matrix(){const my=store.get('mx',{});
+  $('#mx').innerHTML='<tr><th>Дәстүр</th><th>К1</th><th>К2</th><th>К3</th><th>К4</th><th>Менің балым</th></tr>'+MX().map((x,i)=>`<tr><td>${x.e} ${x.name}</td>${[0,1,2,3].map(k=>`<td><select data-r="${i}" data-k="${k}"><option value="">–</option>${[0,1,2].map(v=>`<option ${my[x.name]&&my[x.name][k]===v?'selected':''}>${v}</option>`).join('')}</select></td>`).join('')}<td><b id="mxs${i}"></b></td></tr>`).join('');
+  sumMx();}
+function sumMx(){const my=store.get('mx',{});MX().forEach((x,i)=>{const a=my[x.name]||[];const f=a.filter(v=>v!==null&&v!==undefined).length;$('#mxs'+i).textContent=f===4?a.reduce((s,v)=>s+v,0):'';})}
+$('#mx').onchange=e=>{const s=e.target;if(!s.dataset.r)return;const x=MX()[+s.dataset.r];const my=store.get('mx',{});my[x.name]=my[x.name]||[null,null,null,null];my[x.name][+s.dataset.k]=s.value===''?null:+s.value;store.set('mx',my);sumMx()};
+$('#mxReset').onclick=()=>{store.set('mx',{});matrix();$('#mxOut').style.display='none'};
+$('#mxCmp').onclick=()=>{const my=store.get('mx',{});let same=0,done=0;const rows=MX().map(x=>{const a=my[x.name];const au=x.m.reduce((s,v)=>s+v,0);let mine='–';if(a&&a.every(v=>v!==null&&v!==undefined)){done++;mine=a.reduce((s,v)=>s+v,0);if((mine>=6)===(au>=6))same++}return `<div class="grow"><span>${x.name}</span><div class="sbar"><i style="width:${au/8*100}%;background:var(--blue)"></i></div><b>${au}</b></div><div class="muted" style="font-size:13px;margin:-4px 0 6px 160px">сенің балың: ${mine}</div>`}).join('');
+  $('#mxOut').style.display='block';$('#mxOut').innerHTML=`<h3>Автордың бағасы</h3>${rows}<p class="fb ${done?'ok':''}">${done?`Сен ${done} дәстүрді бағаладың. Оның ${same}-інде шешімің («ұсынылады / бейімдеу керек») автордікімен сәйкес келді.`:'Алдымен кемінде бір дәстүрді толық бағала.'}</p><p class="muted">Пікірің өзгеше болса – бұл жақсы! Сабақта неге солай бағалағаныңды дәлелде.</p>`;};
+
+/* күнтізбе */
+function cal(){const S=['көктем','жаз','күз','қыс','кез келген'];const E={'көктем':'🌷','жаз':'☀️','күз':'🍂','қыс':'❄️','кез келген':'🔄'};const list=ALL();
+  $('#season').innerHTML=S.map(s=>`<div class="card"><h3>${E[s]} ${s[0].toUpperCase()+s.slice(1)}</h3>${list.map((x,i)=>x.season===s?`<button class="chip st-${x.st}" data-ci="${i}">${esc(x.name)}</button>`:'').join('')}</div>`).join('');}
+$('#season').onclick=e=>{const b=e.target.closest('[data-ci]');if(b)openCard(ALL(),+b.dataset.ci)};
+
+/* ойындар */
+$$('[data-game]').forEach(b=>b.onclick=()=>{$$('[data-game]').forEach(x=>x.classList.toggle('on',x===b));['mem','quiz','sort'].forEach(g=>$('#g-'+g).style.display=g===b.dataset.game?'block':'none')});
+let mOpen=[],mSteps=0;
+function memNew(){const pick=shuffle(DATA).slice(0,6);const cs=shuffle(pick.flatMap((x,i)=>[{k:i,t:x.e+' '+x.name},{k:i,t:x.val}]));mOpen=[];mSteps=0;$('#memSteps').textContent=0;$('#memMsg').textContent='';
+  $('#mem').innerHTML=cs.map((c,i)=>`<div class="mc" data-k="${c.k}" data-t="${esc(c.t)}" data-i="${i}">?</div>`).join('');}
+$('#mem').onclick=e=>{const c=e.target.closest('.mc');if(!c||c.classList.contains('open')||c.classList.contains('done')||mOpen.length===2)return;c.classList.add('open');c.textContent=c.dataset.t;mOpen.push(c);
+  if(mOpen.length===2){mSteps++;$('#memSteps').textContent=mSteps;const [a,b]=mOpen;if(a.dataset.k===b.dataset.k){setTimeout(()=>{a.className='mc done';b.className='mc done';mOpen=[];if($$('.mc.done').length===12)$('#memMsg').textContent=`Жарайсың! ${mSteps} қадаммен таптың.`},350)}else setTimeout(()=>{[a,b].forEach(x=>{x.classList.remove('open');x.textContent='?'});mOpen=[]},900)}};
+$('#memNew').onclick=memNew;
+
+let QZ=[],qzI=0,qzS=0;
+function makeQuiz(n){const qs=[];const pool=shuffle(DATA);
+  for(const x of pool.slice(0,n)){const t=Math.random();let q,ans,opts;
+    if(t<0.4){q=`Қай дәстүр туралы айтылған? «${x.desc.replace(new RegExp(x.name,'gi'),'…')}»`;ans=x.name;opts=shuffle([x.name,...shuffle(DATA.filter(y=>y!==x)).slice(0,3).map(y=>y.name)])}
+    else if(t<0.7){q=`«${x.name}» дәстүрінің мәні қандай?`;ans=x.val;opts=shuffle([x.val,...shuffle(DATA.filter(y=>y.val!==x.val)).slice(0,3).map(y=>y.val)])}
+    else{q=`«${x.name}» дәстүрінің бүгінгі жағдайы қандай (зерттеу бойынша)?`;ans=STATUS[x.st].name;opts=Object.values(STATUS).map(s=>s.name)}
+    qs.push({q,ans,opts})}return qs}
+function qzNew(){QZ=makeQuiz(10);qzI=0;qzS=0;qzShow()}
+function qzShow(){if(qzI>=QZ.length){$('#qz').innerHTML=`<p class="fb ok">Викторина аяқталды! Нәтижең: ${qzS} / ${QZ.length}</p>`;$('#qzScore').textContent='';return}
+  const it=QZ[qzI];$('#qzScore').textContent=`${qzI+1}/${QZ.length} · ұпай ${qzS}`;$('#qz').innerHTML=`<p><b>${esc(it.q)}</b></p>`+it.opts.map(o=>`<button class="opt">${esc(o)}</button>`).join('');
+  $$('#qz .opt').forEach(b=>b.onclick=()=>{$$('#qz .opt').forEach(x=>{x.disabled=true;if(x.textContent===it.ans)x.classList.add('right')});if(b.textContent===it.ans)qzS++;else b.classList.add('wrong');setTimeout(()=>{qzI++;qzShow()},1100)})}
+$('#qzNew').onclick=qzNew;
+
+let SR=[],srI=0,srS=0;
+function srNew(){SR=shuffle(DATA).slice(0,10);srI=0;srS=0;srShow()}
+function srShow(){if(srI>=SR.length){$('#sr').innerHTML=`<p class="fb ok">Нәтижең: ${srS} / ${SR.length}</p><button class="btn red" id="srAgain">Қайта ойнау</button>`;$('#srAgain').onclick=srNew;$('#srScore').textContent='';return}
+  const x=SR[srI];$('#srScore').textContent=`${srI+1}/${SR.length} · ұпай ${srS}`;
+  $('#sr').innerHTML=`<div style="font-size:44px">${x.e}</div><h2>${x.name}</h2><p class="muted">${esc(x.desc)}</p><div class="row">${Object.keys(STATUS).map(s=>`<button class="btn" data-st="${s}">${STATUS[s].name}</button>`).join('')}</div><div id="srFb"></div>`;
+  $$('#sr [data-st]').forEach(b=>b.onclick=()=>{const ok=b.dataset.st===x.st;if(ok)srS++;$$('#sr [data-st]').forEach(y=>y.disabled=true);$('#srFb').innerHTML=`<p class="fb ${ok?'ok':'no'}">${ok?'Дұрыс!':'Зерттеу бойынша: '+STATUS[x.st].name+'.'} ${x.st==='b'?'Бүгін оны былай жаңғыртуға болады: '+esc(x.modern):''}</p><button class="btn red" id="srNext">Келесі →</button>`;$('#srNext').onclick=()=>{srI++;srShow()}})}
+
+/* тапсырмалар */
+const PTS=()=>store.get('pts',{});
+function addPts(id,n){const p=PTS();p[id]=Math.max(p[id]||0,n);store.set('pts',p);ptsShow()}
+const BADGES=[['Дәстүр білгірі',10],['Мән іздеуші',30],['Жаңғыртушы',50],['Мұрагер',70]];
+function ptsShow(){const t=Object.values(PTS()).reduce((a,b)=>a+b,0);$('#pts').textContent=t;$('#badges').innerHTML=BADGES.map(([n,v])=>`<span class="badge ${t>=v?'got':''}">${t>=v?'🏅':'🔒'} ${n} (${v})</span>`).join('')}
+const F=n=>DATA.find(x=>x.name===n);
+const TASKS=[
+ {id:'t1',title:'1. Сәйкестендір: дәстүр және оның мәні',type:'match',items:['Ерулік','Асар','Белкөтерер','Тоқымқағар','Көрісу'].map(n=>[n,F(n).val]),
+  teach:'Оқушылар жұпта жұмыс істейді. Тапсырмадан кейін «Бұл мән бүгін қай жерде керек?» деп сұраңыз. Уақыты: 5 минут.'},
+ {id:'t2',title:'2. Шындық па, жалған ба?',type:'tf',items:[['Ерулік – жаңа көшіп келген көршіге дәм апару дәстүрі.',true],['Асар кезінде жұмыс үшін ақы төленген.',false],['Көрісу 14 наурызда аталып өтеді.',true],['Бәсіре – ұлттық ойынның атауы.',false],['Асық ату ЮНЕСКО тізіміне енген.',true],['Белкөтерер жаңа туған нәрестеге арналған.',false]],
+  teach:'Жалған тұжырымдарды оқушылар дұрыстап айтуы керек. Уақыты: 5 минут.'},
+ {id:'t3',title:'3. Бос орынды толтыр',type:'gap',items:[['Сапарға аттанар адамға дәм беріп, ақ тілек айту – ___.','Тоқымқағар',['Тоқымқағар','Ерулік','Сыбаға']],['Қадірлі адамға арнайы сақталатын үлес – ___.','Сыбаға',['Асар','Сыбаға','Сарқыт']],['Балаға күтуге атап берілген құлын не қозы – ___.','Бәсіре',['Бәсіре','Байғазы','Көрімдік']],['Кешке жастар жиналатын әткеншек – ___.','Алтыбақан',['Ақсүйек','Алтыбақан','Асық']],['Алғашқы қымызға көршілерді шақыру – ___.','Қымызмұрындық',['Соғым басы','Қымызмұрындық','Наурыз көже']]],
+  teach:'Тапсырманы басылған жұмыс парағында да орындауға болады. Уақыты: 5 минут.'},
+ {id:'t4',title:'4. Ескі мен жаңа: дәстүр және оның заманауи түрі',type:'match',items:[['Асар','Мектеп ауласын бірігіп көгалдандыру'],['Ерулік','Жаңа сыныптасқа таныстыру хаты мен мектеп картасы'],['Тоқымқағар','Олимпиадаға аттанған досқа тілек хат'],['Бәсіре','Көшет не үй жануарын күтіп, күнделік жүргізу'],['Белкөтерер','Ауырған сыныптасқа хат пен сурет апару']],
+  teach:'Тапсырмадан кейін оқушылар өз форматтарын ұсынады. Уақыты: 7 минут.'},
+ {id:'t5',title:'5. Себебін тап: дәстүр неге ұмытылуда?',type:'why',items:['Қымызмұрындық','Ерулік','Алтыбақан','Тоқымқағар','Бәсіре','Асар'],
+  teach:'Бір дәстүрдің бірнеше себебі болуы мүмкін. Оқушы басқа себеп айтса, дәлелін тыңдаңыз. Уақыты: 5 минут.'},
+ {id:'t6',title:'6. Пікірталас: «Дәстүрді өзгертіп жаңғыртуға бола ма?»',type:'debate',
+  teach:'Сыныпты екі топқа бөліңіз: «иә» және «жоқ». Әр топ 3 дәлел айтады. Соңында ортақ шешім шығарады. Уақыты: 10 минут.'},
+ {id:'t7',title:'7. Мен жаңғыртқан дәстүр',type:'own',
+  teach:'Үй тапсырмасы ретінде беруге болады. Жақсы жұмыстарды «Жаңғырт!» бөлімінде паспорт түрінде басып шығарып, сынып қабырғасына іліңіз.'}
+];
+function renderTasks(){$('#taskList').innerHTML=TASKS.map(t=>{let body='';
+  if(t.type==='match'){const rs=shuffle(t.items.map(i=>i[1]));body=t.items.map((it,k)=>`<div class="row"><label>${it[0]}</label><select data-k="${k}"><option value="">таңда…</option>${rs.map(r=>`<option>${esc(r)}</option>`).join('')}</select></div>`).join('')}
+  if(t.type==='tf')body=t.items.map((it,k)=>`<div class="row"><span style="flex:1">${it[0]}</span><select data-k="${k}"><option value="">?</option><option value="1">Шындық</option><option value="0">Жалған</option></select></div>`).join('');
+  if(t.type==='gap')body=t.items.map((it,k)=>`<div class="row"><span style="flex:1">${it[0]}</span><select data-k="${k}"><option value="">…</option>${it[2].map(o=>`<option>${o}</option>`).join('')}</select></div>`).join('');
+  if(t.type==='why')body=t.items.map((n,k)=>`<div class="row"><label>${n}</label><select data-k="${k}"><option value="">себебі…</option>${Object.keys(WHY).map(w=>`<option value="${w}">${WHY[w]}</option>`).join('')}</select></div>`).join('');
+  if(t.type==='debate')body=`<p>Өз позицияңды таңда да, кемінде екі дәлел жаз.</p><div class="row"><select data-k="pos"><option value="">позиция…</option><option>Иә, болады</option><option>Жоқ, болмайды</option></select></div><textarea data-k="arg" placeholder="1-дәлел… 2-дәлел…"></textarea>`;
+  if(t.type==='own')body=`<div class="row"><label>Дәстүр</label><select data-k="tr">${DATA.filter(x=>x.st!=='a').map(x=>`<option>${x.name}</option>`).join('')}</select></div><textarea data-k="txt" placeholder="Оны қалай, қайда, кіммен жаңғыртасың? Мәнін қалай сақтайсың?"></textarea>`;
+  return `<div class="card task" id="${t.id}"><h3>${t.title}</h3>${body}<div class="row"><button class="btn red" data-check="${t.id}">Тексеру</button><span class="fb" id="fb-${t.id}"></span></div><details><summary>Мұғалімге нұсқау</summary>${t.teach}</details></div>`}).join('')}
+$('#taskList').onclick=e=>{const b=e.target.closest('[data-check]');if(!b)return;const t=TASKS.find(x=>x.id===b.dataset.check);const box=$('#'+t.id);const v=k=>{const el=box.querySelector(`[data-k="${k}"]`);return el?el.value:''};let ok=0,n=0,msg='';
+  if(t.type==='match'){n=t.items.length;t.items.forEach((it,k)=>{if(v(k)===it[1])ok++})}
+  if(t.type==='tf'){n=t.items.length;t.items.forEach((it,k)=>{if(v(k)!==''&&(v(k)==='1')===it[1])ok++})}
+  if(t.type==='gap'){n=t.items.length;t.items.forEach((it,k)=>{if(v(k)===it[1])ok++})}
+  if(t.type==='why'){n=t.items.length;t.items.forEach((nm,k)=>{if(v(k)===F(nm).why)ok++})}
+  if(t.type==='debate'){n=1;ok=(v('pos')&&v('arg').trim().length>=40)?1:0;msg=ok?'':'Позицияңды таңдап, кемінде 40 таңбадан тұратын дәлел жаз.'}
+  if(t.type==='own'){n=1;ok=v('txt').trim().length>=60?1:0;msg=ok?'':'Кемінде 60 таңбадан тұратын жоспар жаз.'}
+  const p=Math.round(ok/n*10);addPts(t.id,p);const f=$('#fb-'+t.id);f.className='fb '+(ok===n?'ok':'no');f.textContent=msg||`${ok} / ${n} дұрыс · +${p} ұпай`};
+$('#resetPts').onclick=()=>{store.set('pts',{});ptsShow()};
+
+/* жаңғырт */
+function passport(){const x=F($('#pTr').value)||DATA[0];const g=id=>esc($(id).value)||'<span class="muted">…</span>';
+  $('#passport').innerHTML=`<div class="eb">Дәстүр паспорты</div><h3>${x.e} ${x.name}</h3><div class="f"><b>Ертеде:</b> ${esc(x.desc)}</div><div class="f"><b>Мәні:</b> ${esc(x.val)}</div><div class="f"><b>Жаңа атауы:</b> ${g('#pName')}</div><div class="f"><b>Қайда, қашан:</b> ${g('#pWhen')}</div><div class="f"><b>Кімдер қатысады:</b> ${g('#pWho')}</div><div class="f"><b>Не істейміз:</b> ${g('#pWhat')}</div><div class="f"><b>Сақталатын мәні:</b> ${g('#pVal')}</div><div class="f"><b>Автордың ұсынысы:</b> ${esc(x.modern)}</div><p class="muted" style="margin-top:10px">Дайындаған: ____________ Күні: ________</p>`}
+function makeInit(){$('#pTr').innerHTML=DATA.filter(x=>x.st!=='a').map(x=>`<option>${x.name}</option>`).join('');['#pTr','#pName','#pWhen','#pWho','#pWhat','#pVal'].forEach(id=>$(id).addEventListener('input',passport));$('#pTr').onchange=passport;passport()}
+$('#pPrint').onclick=()=>printHTML(`<div class="passport">${$('#passport').innerHTML}</div>`);
+
+/* сөздік */
+const DICT=[['Ашамай','Кішкентай балаларға арналған, екі жағы биік, ағаш ер.'],['Бәсіре','Балаға енші ретінде атап берілген төл (құлын, қозы, бота).'],['Белкөтерер','Ауырған не науқастан тұрған адамға, қартқа апарылатын жұғымды, жеңіл ас.'],['Ерулік','Жаңа қоныстанған көршіге берілетін дәм, қонақасы.'],['Асар','Ауыр жұмысты көпшілік болып, ақысыз, бірігіп атқару.'],['Сыбаға','Қадірлі адамға, туысқа арнайы сақталатын үлес.'],['Соғым','Қысқа арнап сойылатын мал, қыстың етке деген қоры.'],['Тоқым','Ердің астына салынатын киіз төсеніш. «Тоқымқағар» – сапарға шығарып салу.'],['Амал','Ескі қазақ күнтізбесі бойынша жыл басы, 14 наурыз; Көрісу күні.'],['Алтыбақан','Ұзын сырықтардан құрылатын үлкен әткеншек, жастардың ойын-сауық орны.'],['Шаңырақ','Киіз үйдің төбесіндегі дөңгелек күмбез; отбасының, әулеттің белгісі.'],['Тұсау','Малдың алдыңғы екі аяғын байлайтын жіп. «Тұсаукесер» – баланың алғашқы қадамын тойлау.']];
+function dict(){$('#dict').innerHTML=DICT.map(([w,d])=>`<dt>${w}</dt><dd>${d}</dd>`).join('')}
+
+/* қосу */
+function addInit(){$('#aG').innerHTML=Object.keys(GROUPS).map(g=>`<option value="${g}">${GROUPS[g].name}</option>`).join('');addedShow()}
+function addedShow(){const a=store.get('added',[]);$('#added').innerHTML=a.length?a.map((x,i)=>`<div class="row">${esc(x.e)} <b>${esc(x.name)}</b> <button class="btn" data-del="${i}">Өшіру</button></div>`).join(''):'Әзірге жоқ.'}
+$('#added').onclick=e=>{const b=e.target.closest('[data-del]');if(!b)return;const a=store.get('added',[]);a.splice(+b.dataset.del,1);store.set('added',a);addedShow();refresh()};
+$('#aSave').onclick=()=>{const name=$('#aName').value.trim();if(!name){$('#aMsg').className='fb no';$('#aMsg').textContent='Атауын жаз.';return}
+  const a=store.get('added',[]);a.push({name,e:$('#aE').value||'✨',g:$('#aG').value,st:$('#aS').value,season:'кез келген',desc:$('#aDesc').value,val:$('#aVal').value,modern:$('#aMod').value,q:$('#aQ').value});store.set('added',a);
+  $('#aMsg').className='fb ok';$('#aMsg').textContent='Қосылды! «Дәстүрлер» бөлімінен қара.';['#aName','#aDesc','#aVal','#aMod','#aQ'].forEach(id=>$(id).value='');addedShow();refresh()};
+
+/* басып шығару */
+function printHTML(h){$('#print').innerHTML=h;window.print()}
+$('#printBook').onclick=()=>printHTML(`<h1>«Дәстүр жаңғырады» альбомы</h1>`+ALL().map(x=>`<div class="pc" style="margin-bottom:8px"><b style="font-size:18px">${esc(x.e)} ${esc(x.name)}</b> – ${STATUS[x.st].name}<br><b>Ертеде:</b> ${esc(x.desc)}<br><b>Мәні:</b> ${esc(x.val)}<br><b>Бүгін:</b> ${esc(x.modern)}<br><i>Ойлан: ${esc(x.q)}</i></div>`).join(''));
+$('#qzPrint').onclick=()=>{const qs=makeQuiz(10);printHTML(`<div class="page"><h1>Викторина: «Дәстүр жаңғырады»</h1>${qs.map((q,i)=>`<p><b>${i+1}. ${esc(q.q)}</b><br>${q.opts.map((o,j)=>'abcd'[j]+') '+esc(o)).join('&nbsp;&nbsp; ')}</p>`).join('')}</div><h1>Жауаптары</h1>${qs.map((q,i)=>`${i+1} – ${esc(q.ans)}`).join('<br>')}`)};
+$('#printCards').onclick=()=>{const p=shuffle(DATA).slice(0,12);printHTML(`<h1>Ойын карточкалары: «Жұбын тап» (қиып алыңыз)</h1><div class="pgrid">${p.map(x=>`<div class="pc" style="font-size:20px;text-align:center">${esc(x.e)}<br><b>${esc(x.name)}</b></div><div class="pc" style="text-align:center">${esc(x.val)}</div>`).join('')}</div>`)};
+$('#printWS').onclick=()=>{const mv=shuffle(TASKS[0].items.map(i=>i[1]));printHTML(`<h1>Жұмыс парағы: «Ұмытылып бара жатқан дәстүрлер»</h1><p>Аты-жөні / коды: ____________ Сынып: ____</p>
+<h3>1. Сәйкестендір (санға әріпті жаз)</h3>${TASKS[0].items.map((it,k)=>`${k+1}) ${it[0]} ____ &nbsp;&nbsp;&nbsp;&nbsp; ${'АӘБВГ'[k]}) ${esc(mv[k])}`).join('<br>')}
+<h3>2. Шындық па, жалған ба? (Ш / Ж)</h3>${TASKS[1].items.map((it,k)=>`${k+1}) ${it[0]} ____`).join('<br>')}
+<h3>3. Бос орынды толтыр</h3>${TASKS[2].items.map((it,k)=>`${k+1}) ${it[0]} (${it[2].join(' / ')})`).join('<br>')}
+<h3>4. Неге ұмытылуда? Себебін жаз</h3>${TASKS[4].items.map((n,k)=>`${k+1}) ${n}: ____________________`).join('<br>')}
+<h3>5. Бір дәстүрді таңдап, оны бүгін қалай жаңғыртуға болатынын жаз</h3><p>______________________________________________<br>______________________________________________<br>______________________________________________</p>`)};
+
+function refresh(){home();chips();cards();cal()}
+refresh();matrix();memNew();qzNew();srNew();renderTasks();ptsShow();makeInit();dict();addInit();
+go((location.hash||'#home').slice(1).split('?')[0]||'home');
+if(!document.getElementById('v-'+(location.hash||'#home').slice(1)))go('home');
+})();
+</script>
+</body>
+</html>
